@@ -1,6 +1,6 @@
-package me.right42.jpastudy.example.repository;
+package me.right42.jpastudy.example.domain.repository;
 
-import me.right42.jpastudy.example.domain.Member;
+import me.right42.jpastudy.domain.Member;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
