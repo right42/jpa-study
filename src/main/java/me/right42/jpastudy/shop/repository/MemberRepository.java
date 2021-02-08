@@ -1,17 +1,17 @@
 package me.right42.jpastudy.shop.repository;
 
+import lombok.RequiredArgsConstructor;
 import me.right42.jpastudy.shop.domain.Member;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class MemberRepository {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public void save(Member member) {
         entityManager.persist(member);
