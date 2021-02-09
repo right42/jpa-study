@@ -1,6 +1,7 @@
 package me.right42.jpastudy.shop.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ public class Address {
 
     private String zipcode;
 
+    @Builder
     public Address(String city, String street, String zipcode) {
         this.city = city;
         this.street = street;
