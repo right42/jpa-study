@@ -32,4 +32,34 @@ class MemberServiceTest {
 
         assertThat(id).isEqualTo(member.getId());
     }
+
+    @Test
+    void joinFailTest(){
+
+        Member member = new Member();
+        member.setAddress(
+                Address.builder()
+                        .city("서울")
+                        .street("도시")
+                        .zipcode("1234")
+                        .build()
+        );
+        member.setName("right");
+
+        Member secondMember = new Member();
+        secondMember.setAddress(
+                Address.builder()
+                        .city("서울")
+                        .street("도시")
+                        .zipcode("1234")
+                        .build()
+        );
+        secondMember.setName("right");
+
+        memberService.join(member);
+        assertThrows(IllegalStateException.class, () -> {
+            memberService.join(secondMember);
+        });
+
+    }
 }
