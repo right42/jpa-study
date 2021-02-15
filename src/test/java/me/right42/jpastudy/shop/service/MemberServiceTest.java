@@ -1,65 +1,49 @@
 package me.right42.jpastudy.shop.service;
 
-import me.right42.jpastudy.shop.domain.Address;
 import me.right42.jpastudy.shop.domain.Member;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+@Transactional
 class MemberServiceTest {
 
     @Autowired
     MemberService memberService;
 
     @Test
-    void joinTest(){
+    @DisplayName("회원가입 테스트")
+    void joinTest() {
         Member member = new Member();
-        member.setAddress(
-                Address.builder()
-                    .city("서울")
-                    .street("도시")
-                    .zipcode("1234")
-                .build()
-        );
-        member.setName("right");
+        member.setName("kim");
 
-        Long id = memberService.join(member);
+        Long savedId = memberService.join(member);
 
-        assertThat(id).isEqualTo(member.getId());
+        assertThat(member).isEqualTo(memberService.findOne(savedId));
     }
 
     @Test
-    void joinFailTest(){
-
+    void joinValidationTest() {
         Member member = new Member();
-        member.setAddress(
-                Address.builder()
-                        .city("서울")
-                        .street("도시")
-                        .zipcode("1234")
-                        .build()
-        );
-        member.setName("right");
+        member.setName("kim");
 
-        Member secondMember = new Member();
-        secondMember.setAddress(
-                Address.builder()
-                        .city("서울")
-                        .street("도시")
-                        .zipcode("1234")
-                        .build()
-        );
-        secondMember.setName("right");
+        Member member2 = new Member();
+        member2.setName("kim");
 
         memberService.join(member);
-        assertThrows(IllegalStateException.class, () -> {
-            memberService.join(secondMember);
+        IllegalStateException illegalStateException = assertThrows(IllegalStateException.class, () -> {
+            memberService.join(member2);
         });
 
+        assertThat(illegalStateException.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
     }
 }
