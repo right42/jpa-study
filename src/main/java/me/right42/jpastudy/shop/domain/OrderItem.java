@@ -1,6 +1,8 @@
 package me.right42.jpastudy.shop.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.right42.jpastudy.shop.domain.item.Item;
 
@@ -10,6 +12,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {
 
     @Id @GeneratedValue
@@ -28,11 +31,22 @@ public class OrderItem {
 
     private int count;
 
+    //==생성 메서드==//
+    public static OrderItem createOrderItem(Item item, int orderPrice, int count) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.item = item;
+        orderItem.orderPrice = orderPrice;
+        orderItem.count = count;
+
+        item.removeStock(count);
+        return orderItem;
+    }
 
     public void cancel() {
         getItem().addStock(count);
     }
 
+    //==조회 로직==//
     public int getTotalPrice() {
         return getOrderPrice() * getCount();
     }
