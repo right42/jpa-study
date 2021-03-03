@@ -8,6 +8,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class MemberApiController {
@@ -15,7 +17,7 @@ public class MemberApiController {
     private final MemberService memberService;
 
 
-    public CreateMemberResponse saveMemberV1(@RequestBody @Validated Member member) {
+    public CreateMemberResponse saveMemberV1(@RequestBody @Valid Member member) {
         return new CreateMemberResponse();
     }
 
