@@ -1,4 +1,10 @@
-### v1
+### 조회 v1
+GET http://localhost:8080/api/v1/members
+
+### 조회 v2
+GET http://localhost:8080/api/v2/members
+
+### join v1
 POST http://localhost:8080/api/v1/members
 Content-Type: application/json
 
@@ -6,7 +12,7 @@ Content-Type: application/json
   "name" : "hello"
 }
 
-###
+### join v2
 POST http://localhost:8080/api/v1/members
 Content-Type: application/json
 
@@ -14,7 +20,7 @@ Content-Type: application/json
   "name" : "hello2"
 }
 
-### update
+### update v2
 PUT http://localhost:8080/api/v2/members/1
 Content-Type: application/json
 
