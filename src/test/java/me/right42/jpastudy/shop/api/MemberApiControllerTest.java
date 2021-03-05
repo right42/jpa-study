@@ -2,12 +2,16 @@ package me.right42.jpastudy.shop.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.right42.jpastudy.shop.domain.Member;
+import me.right42.jpastudy.shop.repository.MemberRepository;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -24,6 +28,9 @@ class MemberApiControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    MemberRepository memberRepository;
+
     @Test
     void 회원가입_v1() throws Exception {
         Map<String, String> params = new HashMap<>();
@@ -37,6 +44,30 @@ class MemberApiControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value("1"))
         ;
+
+    }
+
+    @Test
+    @Transactional
+    void 회원수정_v2() throws Exception {
+        Member member = new Member();
+        member.setName("hello");
+
+        memberRepository.save(member);
+        Long id = member.getId();
+
+        Map<String, String> params = new HashMap<>();
+        params.put("name", "new-hello");
+        params.put("id", id.toString());
+
+        mockMvc.perform(
+                    put("/api/v2/members/" + id.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(params))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(params.get("name")))
+            ;
 
     }
 
