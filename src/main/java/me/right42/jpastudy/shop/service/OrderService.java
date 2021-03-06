@@ -50,7 +50,4 @@ public class OrderService {
         order.orderCancel();
     }
 
-//    public List<Order> findOrders(OrderSearch orderSearch) {
-//        return orderRepository.findAll(orderSearch);
-//    }
 }

@@ -35,7 +35,7 @@ public class InitDb {
             Book book = createBook("JPA1", 10000, 100);
             entityManager.persist(book);
 
-            Book book2 = createBook("JPA2", 20000, 100);
+            Book book2 = createBook("JPA2", 20000, 200);
             entityManager.persist(book2);
 
             OrderItem orderItem = OrderItem.createOrderItem(book, 10000, 1);
@@ -53,7 +53,7 @@ public class InitDb {
             Book book = createBook("SPRING1", 20000, 100);
             entityManager.persist(book);
 
-            Book book2 = createBook("SPRING2", 40000, 100);
+            Book book2 = createBook("SPRING2", 40000, 150);
             entityManager.persist(book2);
 
             OrderItem orderItem = OrderItem.createOrderItem(book, 10000, 1);
