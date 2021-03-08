@@ -3,7 +3,6 @@ package me.right42.jpastudy.shop.repository;
 import lombok.RequiredArgsConstructor;
 import me.right42.jpastudy.shop.domain.Order;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -37,5 +36,27 @@ public class OrderRepository {
                         " join fetch o.member m " +
                         " join fetch o.delivery d", Order.class
         ).getResultList();
+    }
+
+
+    public List<Order> findAllWithItem() {
+        return entityManager.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d" +
+                        " join fetch o.orderItems oi " +
+                        " join fetch oi.item ", Order.class
+        ).getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return entityManager.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class
+            )
+            .setFirstResult(offset)
+            .setMaxResults(limit)
+            .getResultList();
     }
 }

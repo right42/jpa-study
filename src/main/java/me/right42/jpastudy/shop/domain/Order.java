@@ -2,6 +2,7 @@ package me.right42.jpastudy.shop.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 
