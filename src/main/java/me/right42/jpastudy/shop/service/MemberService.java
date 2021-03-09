@@ -6,7 +6,9 @@ import me.right42.jpastudy.shop.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,7 +29,7 @@ public class MemberService {
     }
 
     public Member findOne(Long id){
-        return memberRepository.findOne(id);
+        return memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     private void validatedDuplicateMember(Member member) {
@@ -39,7 +41,7 @@ public class MemberService {
 
     @Transactional
     public void update(Long id, String name) {
-        Member findMember = memberRepository.findOne(id);
+        Member findMember = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         findMember.setName(name);
     }
 }

@@ -3,8 +3,7 @@ package me.right42.jpastudy.shop.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.right42.jpastudy.shop.domain.Member;
-import me.right42.jpastudy.shop.repository.MemberRepository;
-import org.hamcrest.Matchers;
+import me.right42.jpastudy.shop.repository.MemberRepositoryOld;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +26,7 @@ class MemberApiControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    MemberRepository memberRepository;
+    MemberRepositoryOld memberRepositoryOld;
 
     @Test
     void 회원가입_v1() throws Exception {
@@ -53,7 +50,7 @@ class MemberApiControllerTest {
         Member member = new Member();
         member.setName("hello");
 
-        memberRepository.save(member);
+        memberRepositoryOld.save(member);
         Long id = member.getId();
 
         Map<String, String> params = new HashMap<>();

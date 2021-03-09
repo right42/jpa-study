@@ -7,7 +7,7 @@ import me.right42.jpastudy.shop.domain.Order;
 import me.right42.jpastudy.shop.domain.OrderItem;
 import me.right42.jpastudy.shop.domain.item.Item;
 import me.right42.jpastudy.shop.repository.ItemRepository;
-import me.right42.jpastudy.shop.repository.MemberRepository;
+import me.right42.jpastudy.shop.repository.MemberRepositoryOld;
 import me.right42.jpastudy.shop.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final MemberRepository memberRepository;
+    private final MemberRepositoryOld memberRepositoryOld;
 
     private final ItemRepository itemRepository;
 
@@ -29,7 +29,7 @@ public class OrderService {
     @Transactional
     public Long order(Long memberId, Long itemId, int count) {
         // 엔티티 조회
-        Member findMember = memberRepository.findOne(memberId);
+        Member findMember = memberRepositoryOld.findOne(memberId);
         Item findItem = itemRepository.findOne(itemId);
 
         Delivery delivery = new Delivery();

@@ -8,6 +8,10 @@ import me.right42.jpastudy.shop.domain.OrderItem;
 import me.right42.jpastudy.shop.domain.OrderStatus;
 import me.right42.jpastudy.shop.repository.OrderRepository;
 import me.right42.jpastudy.shop.repository.OrderSearch;
+import me.right42.jpastudy.shop.repository.order.query.OrderFlatDto;
+import me.right42.jpastudy.shop.repository.order.query.OrderItemQueryDto;
+import me.right42.jpastudy.shop.repository.order.query.OrderQueryDto;
+import me.right42.jpastudy.shop.repository.order.query.OrderQueryRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,13 +20,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 @RestController
 @RequiredArgsConstructor
 public class OrderApiController {
 
     private final OrderRepository orderRepository;
+
+    private final OrderQueryRepository orderQueryRepository;
 
     @GetMapping("/api/v1/orders")
     public List<Order> ordersV1() {
@@ -38,7 +44,7 @@ public class OrderApiController {
 
     @GetMapping("/api/v2/orders")
     public List<OrderDto> ordersV2(){
-        List<Order> orders = orderRepository.findAll(new OrderSearch());
+        List<Order> orders = orderRepository.findAllQueryDsl(new OrderSearch());
 
         return orders.stream()
                 .map(OrderDto::new)
@@ -63,6 +69,36 @@ public class OrderApiController {
 
         return orders.stream()
                 .map(OrderDto::new)
+                .collect(toList());
+    }
+
+    @GetMapping("/api/v4/orders")
+    public List<OrderQueryDto> ordersV4(){
+        return orderQueryRepository.findOrderQueryDtos();
+    }
+
+    @GetMapping("/api/v5/orders")
+    public List<OrderQueryDto> ordersV5(){
+        return orderQueryRepository.findAllByDto();
+    }
+
+    @GetMapping("/api/v6/orders")
+    public List<OrderQueryDto> ordersV6(){
+        List<OrderFlatDto> flats = orderQueryRepository.findAllByDtoFlat();
+        return flats.stream()
+                .collect(
+                        groupingBy(o -> new OrderQueryDto(o.getOrderId(), o.getName(), o.getOrderDate(), o.getOrderStatus(), o.getAddress()),
+                            mapping(o -> new OrderItemQueryDto(o.getOrderId(), o.getItemName(), o.getOrderPrice(), o.getCount()), toList())
+                        )
+                )
+                .entrySet()
+                .stream().map(
+                        e -> new OrderQueryDto(e.getKey().getOrderId(),
+                        e.getKey().getName(),
+                        e.getKey().getOrderDate(),
+                        e.getKey().getOrderStatus(),
+                        e.getKey().getAddress(),
+                        e.getValue()))
                 .collect(toList());
     }
 

@@ -9,3 +9,12 @@ GET http://localhost:8080/api/v3/orders
 
 ### 주문 조회 v3.1
 GET http://localhost:8080/api/v3.1/orders?limit=10&offset=1
+
+### 주문 조회 v4
+GET http://localhost:8080/api/v4/orders
+
+### 주문 조회 v5
+GET http://localhost:8080/api/v5/orders
+
+### 주문 조회 v6
+GET http://localhost:8080/api/v6/orders
